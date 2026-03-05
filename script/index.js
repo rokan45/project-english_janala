@@ -18,7 +18,7 @@ const displayLesson = (lessons) => {
         //2.1create element
         const lessonDIv = document.createElement("div");
         lessonDIv.innerHTML = `
-        <button href="" onclick="loadWord(${lesson.level_no})" class="btn btn-outline btn-primary">
+        <button id="lesson-btn-${lesson.level_no}" href="" onclick="loadWord(${lesson.level_no})" class="btn btn-outline btn-primary lesson-btn">
         <i class="fa-solid fa-book-open"></i>Lesson-${lesson.level_no}</button>
         `
         //2.2 append 
@@ -27,13 +27,25 @@ const displayLesson = (lessons) => {
     });
 };
 
+const removeActive=()=>{
+    const clicBtn=document.querySelectorAll(".lesson-btn");
+    clicBtn.forEach(btn => {
+        btn.classList.remove("active");
+    });
+}
+
 const loadWord = (id) => {
     // console.log(id);
     const wordUrl = `https://openapi.programming-hero.com/api/level/${id}`
     console.log(wordUrl);
     fetch(wordUrl)
         .then(res => res.json())
-        .then(json => displayWord(json.data))
+        .then(json => {
+            removeActive();  //remove all active class
+            const lessonBtn=document.getElementById(`lesson-btn-${id}`);
+            lessonBtn.classList.add("active"); //add active class on selelcted button
+            displayWord(json.data)
+        })
 }
 
 const displayWord = (words) => {
@@ -57,9 +69,9 @@ const displayWord = (words) => {
         wordCard.innerHTML = `<div class="bg-white w-[300px] h-[150px] rounded-md p-2.5 text-center flex flex-col">
                 <div class="flex flex-col items-center justify-center flex-1">
                     <h2 class="text-lg font-bold">${word.word ? word.word : "এখানে শব্দ পাওয়া যায়নি!"}</h2>
-                    <h3 class="mt-1 text-sm font-bold text-[#79716B]"><span>meaning</span>/<span>pronunciation</span>
+                    <h3 class="mt-2 text-sm font-bold text-[#79716B]"><span>meaning</span>/<span>pronunciation</span>
                     </h3>
-                    <h3 class="mt-1 text-sm font-bold text-[#79716B]"><span>${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি!"}</span>/<span>${word.pronunciation ? word.pronunciation : "উচ্চারন পাওয়া যায়নি!"}</span>
+                    <h3 class="mt-2 text-sm font-bold text-[#79716B]"><span>${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি!"}</span>/<span>${word.pronunciation ? word.pronunciation : "উচ্চারন পাওয়া যায়নি!"}</span>
                     </h3>
                 </div>
                 <div class="flex justify-between items-center mt-auto">

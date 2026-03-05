@@ -41,16 +41,25 @@ const displayWord = (words) => {
     const wordContainer = document.getElementById("word-container");
     wordContainer.innerHTML = "";
 
+    if (words.length == 0) {
+        wordContainer.innerHTML = `<div class="w-11/12 mx-auto bg-gray-100 rounded-md text-center py-15 mt-5 col-span-full">
+        <img class="mx-auto" src="./images/alert-error.png" alt="">
+            <p class="text-sm text-[#79716B]">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+            <h2 class="text-4xl font-medium font-bangla mt-3 text-[#292524]">নেক্সট Lesson এ যান</h2>
+        </div>`
+        return;
+    }
+
     //for each element
     words.forEach(word => {
         //create element
         const wordCard = document.createElement("div");
         wordCard.innerHTML = `<div class="bg-white w-[300px] h-[150px] rounded-md p-2.5 text-center flex flex-col">
                 <div class="flex flex-col items-center justify-center flex-1">
-                    <h2 class="text-lg font-bold">${word.word}</h2>
+                    <h2 class="text-lg font-bold">${word.word ? word.word : "এখানে শব্দ পাওয়া যায়নি!"}</h2>
                     <h3 class="mt-1 text-sm font-bold text-[#79716B]"><span>meaning</span>/<span>pronunciation</span>
                     </h3>
-                    <h3 class="mt-1 text-sm font-bold text-[#79716B]"><span>${word.meaning}</span>/<span>${word.pronunciation}</span>
+                    <h3 class="mt-1 text-sm font-bold text-[#79716B]"><span>${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি!"}</span>/<span>${word.pronunciation ? word.pronunciation : "উচ্চারন পাওয়া যায়নি!"}</span>
                     </h3>
                 </div>
                 <div class="flex justify-between items-center mt-auto">
@@ -61,7 +70,7 @@ const displayWord = (words) => {
 
         //append the create element
         wordContainer.appendChild(wordCard);
-
+ 
 
     });
 
@@ -71,6 +80,3 @@ const displayWord = (words) => {
 
 //call lesson function
 loadLesson();
-
-//calling wordData function
-displayWord();

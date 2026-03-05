@@ -7,6 +7,38 @@ const loadLesson = () => {
         .then(json => displayLesson(json.data))
 }
 
+const removeActive = () => {
+    const clicBtn = document.querySelectorAll(".lesson-btn");
+    clicBtn.forEach(btn => {
+        btn.classList.remove("active");
+    });
+}
+
+const loadWord = (id) => {
+    // console.log(id);
+    const wordUrl = `https://openapi.programming-hero.com/api/level/${id}`
+    console.log(wordUrl);
+    fetch(wordUrl)
+        .then(res => res.json())
+        .then(json => {
+            removeActive();  //remove all active class
+            const lessonBtn = document.getElementById(`lesson-btn-${id}`);
+            lessonBtn.classList.add("active"); //add active class on selelcted button
+            displayWord(json.data)
+        })
+}
+
+const loadWordDetails = async (id) => {
+    const wordUrl = `https://openapi.programming-hero.com/api/word/${id}`
+    const res = await fetch(wordUrl);
+    const details = await res.json();
+    // console.log(details);
+    displayWordDetails(details.data);
+
+};
+
+
+
 //display lessoon data
 const displayLesson = (lessons) => {
     //1. get the element
@@ -26,27 +58,6 @@ const displayLesson = (lessons) => {
 
     });
 };
-
-const removeActive=()=>{
-    const clicBtn=document.querySelectorAll(".lesson-btn");
-    clicBtn.forEach(btn => {
-        btn.classList.remove("active");
-    });
-}
-
-const loadWord = (id) => {
-    // console.log(id);
-    const wordUrl = `https://openapi.programming-hero.com/api/level/${id}`
-    console.log(wordUrl);
-    fetch(wordUrl)
-        .then(res => res.json())
-        .then(json => {
-            removeActive();  //remove all active class
-            const lessonBtn=document.getElementById(`lesson-btn-${id}`);
-            lessonBtn.classList.add("active"); //add active class on selelcted button
-            displayWord(json.data)
-        })
-}
 
 const displayWord = (words) => {
     //get the element
@@ -75,19 +86,43 @@ const displayWord = (words) => {
                     </h3>
                 </div>
                 <div class="flex justify-between items-center mt-auto">
-                    <i class="fa-solid fa-circle-info"></i>
+                    <i onclick="loadWordDetails(${word.id})" class="fa-solid fa-circle-info"></i>
                     <i class="fa-solid fa-volume-high"></i>
                 </div>
             </div>`
 
         //append the create element
         wordContainer.appendChild(wordCard);
- 
+
 
     });
 
 
 }
+
+const displayWordDetails = (word) => {
+    //get the element
+    const detailsCard = document.getElementById("word-details-card");
+    detailsCard.innerHTML = `
+            <h2 class="text-3xl font-semibold">${word.word}(<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})<span class="text-sm font-light">${word.partsOfSpeech?word.partsOfSpeech:""}</span></h2>
+            <h2 class="mt-3">Meaning</h2>
+            <p class="text-[#79716B] text-2xl">${word.meaning}</p>
+            <h2 class="text-2xl font-bold">Example</h2>
+            <p class="mt-1">${word.sentence}</p>
+            <h3 class="mt-3 text-lg font-bold">সমার্থক শব্দ গুলো</h3>
+            <div>
+                <button>${word.synonyms}</button>
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn btn-primary">Continue Learning</button>
+                </form>
+            </div>`;
+    document.getElementById("my_modal_5").showModal();
+
+};
 
 
 //call lesson function

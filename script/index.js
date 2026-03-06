@@ -16,6 +16,7 @@ const removeActive = () => {
 
 const loadWord = (id) => {
     // console.log(id);
+    manageSpinner(true);
     const wordUrl = `https://openapi.programming-hero.com/api/level/${id}`
     console.log(wordUrl);
     fetch(wordUrl)
@@ -43,7 +44,18 @@ const createElements = (arr) => {
         `<span class="btn">${el}</span>`
 
     )
-    return(htmlElememnts.join(" "));
+    return (htmlElememnts.join(" "));
+}
+
+const manageSpinner = (status) => {
+    if (status == true) {
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("word-container").classList.add("hidden");
+    }
+    else {
+        document.getElementById("word-container").classList.remove("hidden");
+        document.getElementById("spinner").classList.add("hidden");
+    }
 }
 
 //display lessoon data
@@ -77,6 +89,7 @@ const displayWord = (words) => {
             <p class="text-sm text-[#79716B]">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
             <h2 class="text-4xl font-medium font-bangla mt-3 text-[#292524]">নেক্সট Lesson এ যান</h2>
         </div>`
+        manageSpinner(false);
         return;
     }
 
@@ -84,7 +97,7 @@ const displayWord = (words) => {
     words.forEach(word => {
         //create element
         const wordCard = document.createElement("div");
-        wordCard.innerHTML = `<div class="bg-white w-[300px] h-[150px] rounded-md p-2.5 text-center flex flex-col">
+        wordCard.innerHTML = `<div class="bg-white w-full h-[150px] rounded-md p-2.5 text-center flex flex-col">
                 <div class="flex flex-col items-center justify-center flex-1">
                     <h2 class="text-lg font-bold">${word.word ? word.word : "এখানে শব্দ পাওয়া যায়নি!"}</h2>
                     <h3 class="mt-2 text-sm font-bold text-[#79716B]"><span>meaning</span>/<span>pronunciation</span>
@@ -103,6 +116,7 @@ const displayWord = (words) => {
 
 
     });
+    manageSpinner(false);
 
 
 }

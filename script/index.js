@@ -145,6 +145,35 @@ const displayWordDetails = (word) => {
 
 };
 
+//add eventlistner to the search button
+document.getElementById("btn-search").addEventListener("click", () => {
+    removeActive();
+    //get the input value
+    const inputElement = document.getElementById("input-search");
+    const inputValue = inputElement.value.trim().toLowerCase();
+
+    //fetch and load the all word data
+    const allWordLink = "https://openapi.programming-hero.com/api/words/all";
+
+    fetch(allWordLink)
+        .then(res => res.json())
+        .then((json) => {
+            const allWord = json.data;
+            console.log(allWord);
+
+            //filtering the word from all word 
+            const filterWord = allWord.filter((word) => {
+                return word.word.toLowerCase().includes(inputValue);
+            });
+            // console.log(filterWord);
+
+            displayWord(filterWord);
+        });
+
+
+
+})
+
 
 //call lesson function
 loadLesson();

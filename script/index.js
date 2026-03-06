@@ -37,7 +37,14 @@ const loadWordDetails = async (id) => {
 
 };
 
+const createElements = (arr) => {
+    // console.log(arr);
+    const htmlElememnts = arr.map((el) =>
+        `<span class="btn">${el}</span>`
 
+    )
+    return(htmlElememnts.join(" "));
+}
 
 //display lessoon data
 const displayLesson = (lessons) => {
@@ -104,22 +111,22 @@ const displayWordDetails = (word) => {
     //get the element
     const detailsCard = document.getElementById("word-details-card");
     detailsCard.innerHTML = `
-            <h2 class="text-3xl font-semibold">${word.word}(<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})<span class="text-sm font-light">${word.partsOfSpeech?word.partsOfSpeech:""}</span></h2>
-            <h2 class="mt-3">Meaning</h2>
-            <p class="text-[#79716B] text-2xl">${word.meaning}</p>
-            <h2 class="text-2xl font-bold">Example</h2>
-            <p class="mt-1">${word.sentence}</p>
-            <h3 class="mt-3 text-lg font-bold">সমার্থক শব্দ গুলো</h3>
-            <div>
-                <button>${word.synonyms}</button>
-            </div>
+           <h2 class="text-3xl font-semibold">${word.word}(<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})<span
+        class="text-sm font-light">${word.partsOfSpeech ? word.partsOfSpeech : ""}</span></h2>
+<h2 class="mt-3">Meaning</h2>
+<p class="text-[#79716B] text-2xl">${word.meaning}</p>
+<h2 class="text-lg font-bold mt-3">Example</h2>
+<p class="mt-1">${word.sentence}</p>
+<h3 class="mt-3 text-lg font-bold">সমার্থক শব্দ গুলো</h3>
+<div>${createElements(word.synonyms)}
+</div>
 
-            <div class="modal-action">
-                <form method="dialog">
-                    <!-- if there is a button in form, it will close the modal -->
-                    <button class="btn btn-primary">Continue Learning</button>
-                </form>
-            </div>`;
+<div class="modal-action">
+    <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn btn-primary">Continue Learning</button>
+    </form>
+</div>`;
     document.getElementById("my_modal_5").showModal();
 
 };

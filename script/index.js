@@ -58,6 +58,13 @@ const manageSpinner = (status) => {
     }
 }
 
+//voice system
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
+
 //display lessoon data
 const displayLesson = (lessons) => {
     //1. get the element
@@ -107,7 +114,7 @@ const displayWord = (words) => {
                 </div>
                 <div class="flex justify-between items-center mt-auto">
                     <i onclick="loadWordDetails(${word.id})" class="fa-solid fa-circle-info"></i>
-                    <i class="fa-solid fa-volume-high"></i>
+                    <i onclick="pronounceWord('${word.word}')" class="fa-solid fa-volume-high"></i>
                 </div>
             </div>`
 
